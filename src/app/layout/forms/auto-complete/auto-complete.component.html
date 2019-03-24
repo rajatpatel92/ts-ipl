@@ -1,0 +1,35 @@
+<mat-card class="matCard">
+    <mat-card-header>
+        <mat-card-title>Make Today's Predictions</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="matCardContent">
+        <p>
+            <label>Match 1 @ 4.00 PM</label>
+            <mat-button-toggle-group #group="matButtonToggleGroup" class="matButtonToggleGroup">
+                <mat-button-toggle value="Chennai Super Kings">
+                Chennai Super Kings
+                </mat-button-toggle>
+                <mat-button-toggle value="Royal Challangers Banglore">
+                Royal Challangers Banglore
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+        </p>
+        <p>
+            <label>Match 2 @ 8.00 PM</label>
+            <mat-button-toggle-group #group="matButtonToggleGroup" class="matButtonToggleGroup">
+                <mat-button-toggle value="Chennai Super Kings">
+                Chennai Super Kings
+                </mat-button-toggle>
+                <mat-button-toggle value="Royal Challangers Banglore">
+                Royal Challangers Banglore
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+        </p>
+    </mat-card-content>
+    <mat-card-actions class="matCardActions">
+        <button mat-stroked-button class="matCardButtonActionText">
+            <mat-icon class="matCardActions-icon">save</mat-icon>
+            SAVE
+        </button>
+    </mat-card-actions>
+</mat-card>
