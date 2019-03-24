@@ -14,7 +14,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TopnavComponent } from './components/topnav/topnav.component';
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
-import { NavComponent } from './nav/nav.component';
+import { LeaderboardModule } from './leaderboard/leaderboard.module';
+import { PredictionModule } from './prediction/prediction.module';
 
 @NgModule({
     imports: [
@@ -27,8 +28,10 @@ import { NavComponent } from './nav/nav.component';
         MatInputModule,
         MatMenuModule,
         MatListModule,
-        TranslateModule
+        TranslateModule,
+        PredictionModule,
+        LeaderboardModule
     ],
-    declarations: [LayoutComponent, NavComponent, TopnavComponent, SidebarComponent]
+    declarations: [LayoutComponent, TopnavComponent, SidebarComponent]
 })
 export class LayoutModule {}

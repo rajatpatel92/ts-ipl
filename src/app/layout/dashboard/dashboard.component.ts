@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
                 charge: '$1,119/night',
                 location: 'London, UK'
             },
-            {
+            /* {
                 imgSrc: 'assets/images/card-3.jpg',
                 place: 'Beautiful Castle',
                 description:
@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
                     'The place is close to Metro Station and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Milan.',
                 charge: '$459/night',
                 location: 'Milan, Italy'
-            }
+            } */
         ];
     }
 

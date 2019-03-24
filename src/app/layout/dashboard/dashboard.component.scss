@@ -16,3 +16,10 @@ table {
 .mb-20 {
     margin-bottom: 20px;
 }
+.chips-wrapper {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    vertical-align: center;
+}
