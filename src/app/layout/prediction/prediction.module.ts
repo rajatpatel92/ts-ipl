@@ -27,7 +27,6 @@ import { PredictionComponent } from './prediction.component';
         MatRadioModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        MatFormFieldModule,
         MatSelectModule,
         MatSliderModule,
         MatButtonModule,
@@ -36,9 +35,6 @@ import { PredictionComponent } from './prediction.component';
         MatPaginatorModule,
         MatSortModule,
         MatTableModule,
-        MatFormFieldModule,
-        MatPaginatorModule,
-        MatInputModule,
         FlexLayoutModule.withConfig({addFlexToParent: false})
     ],
     declarations: [
