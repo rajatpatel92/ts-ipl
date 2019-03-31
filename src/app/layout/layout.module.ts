@@ -16,6 +16,7 @@ import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import { PredictionModule } from './prediction/prediction.module';
+import { ApimanagementModule } from './apimanagement/apimanagement.module';
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import { PredictionModule } from './prediction/prediction.module';
         MatListModule,
         TranslateModule,
         PredictionModule,
-        LeaderboardModule
+        LeaderboardModule,
+        ApimanagementModule
     ],
     declarations: [LayoutComponent, TopnavComponent, SidebarComponent]
 })

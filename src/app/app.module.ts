@@ -4,18 +4,18 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import {
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
-    MatSidenavModule,
-    MatToolbarModule
-} from '@angular/material';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+//Firebase imports
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from '../environments/environment';
+import { AngularFirestore } from '@angular/fire/firestore';
+
 // AoT requires an exported function for factories
 export const createTranslateLoader = (http: HttpClient) => {
     /* for development
@@ -42,9 +42,11 @@ export const createTranslateLoader = (http: HttpClient) => {
                 useFactory: createTranslateLoader,
                 deps: [HttpClient]
             }
-        })
+        }),
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireDatabaseModule
     ],
-    providers: [],
+    providers: [AngularFirestore],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

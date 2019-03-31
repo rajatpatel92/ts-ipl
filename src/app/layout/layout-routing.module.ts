@@ -36,6 +36,10 @@ const routes: Routes = [
             {
                 path: 'leaderboard',
                 loadChildren: './leaderboard/leaderboard.module#LeaderboardModule'
+            },
+            {
+                path: 'apimanagement',
+                loadChildren: './apimanagement/apimanagement.module#ApimanagementModule'
             }
             /* {
                 path: 'blank-page',

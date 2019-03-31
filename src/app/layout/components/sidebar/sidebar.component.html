@@ -7,10 +7,13 @@
             <mat-icon class="sidenav-icon">bar_chart</mat-icon> {{ 'Charts' | translate }}
         </a> -->
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/prediction']">
-            <mat-icon class="sidenav-icon">input</mat-icon> {{ 'Prediction' | translate }}
+            <mat-icon class="sidenav-icon">input</mat-icon> {{ 'My Predictions' | translate }}
         </a>
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/leaderboard']">
             <mat-icon class="sidenav-icon">poll</mat-icon> {{ 'Leaderboard' | translate }}
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/apimanagement']">
+            <mat-icon class="sidenav-icon">poll</mat-icon> {{ 'API' | translate }}
         </a>
         <!-- <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/grid']">
             <mat-icon class="sidenav-icon">grid_on</mat-icon> {{ 'Material Grid' | translate }}

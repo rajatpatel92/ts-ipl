@@ -8,14 +8,13 @@ import {
     MatSliderModule, MatSlideToggleModule, MatButtonModule, MatButtonToggleModule, MatIconModule,
     MatPaginatorModule, MatSortModule, MatTableModule
 } from '@angular/material';
-import { TodayPredictionComponent } from './today-prediction/today-prediction.component';
-import { FormsRoutingModule } from './prediction-routing.module';
+import { PredictionRoutingModule } from './prediction-routing.module';
 import { PredictionComponent } from './prediction.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        FormsRoutingModule,
+        PredictionRoutingModule,
         MatAutocompleteModule,
         FormModule,
         ReactiveFormsModule,
@@ -38,8 +37,7 @@ import { PredictionComponent } from './prediction.component';
         FlexLayoutModule.withConfig({addFlexToParent: false})
     ],
     declarations: [
-        PredictionComponent,
-        TodayPredictionComponent
+        PredictionComponent
     ]
 })
 export class PredictionModule {}
