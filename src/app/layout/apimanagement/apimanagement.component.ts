@@ -17,6 +17,15 @@ export class ApimanagementComponent implements OnInit {
 
   ngOnInit() {
 
+    debugger;
+    console.log("All Matches");
+    this.matchService.getMatches().subscribe(next => console.log(next));
+    console.log("Today Matches");
+    this.matchService.getTodayMatches().subscribe(data => console.log(data));
+    
+  }
+
+  testFunction() {
     this.cricapiService.getMatches().subscribe(
       data => {
         this.apiResponse = data;
@@ -29,15 +38,15 @@ export class ApimanagementComponent implements OnInit {
             if (moment(todayDate).isSame(elementDate, 'day')) {
               //create new match
               //this.matchService.createMatch(element);
+              //return;
             }
             if(moment(elementDate).isBefore(todayDate, 'day')){
               //update match record
+              //console.log(moment(elementDate).isBefore(todayDate, 'day'));
               //this.matchService.updateMatch(element);
             }
           }
         });
       });
-
   }
-
 }
