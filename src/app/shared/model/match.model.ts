@@ -1,5 +1,6 @@
 
 export class Match {
+    id: string;
     date: Date;
     dateTimeGMT: Date;
     matchStarted: boolean;

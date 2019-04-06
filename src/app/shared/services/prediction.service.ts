@@ -17,13 +17,18 @@ export class PredictionService {
     return this.firestore.collection('predictions', ref => ref.where('user','==',userId)).snapshotChanges();
   }
 
+  getUserTodayPredictions(userId: string, date: Date){
+    return this.firestore.collection('predictions', ref => ref.where('user','==',userId)).snapshotChanges();
+  }
+
   createPrediction(prediction: Prediction) {
     return this.firestore.collection('predictions').add(prediction);
   }
 
   updatePrediction(prediction: Prediction) {
+    var predId = prediction.id;
     delete prediction.id;
-    this.firestore.doc('predictions/' + prediction.id).update(prediction);
+    this.firestore.doc('predictions/' + predId).update(prediction);
   }
 
   deletePrediction(predictionId: string) {

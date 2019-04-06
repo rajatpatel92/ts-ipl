@@ -7,6 +7,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { StatModule } from '../../shared/modules/stat/stat.module';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
+import { TodayPredictionComponent } from './today-prediction/today-prediction.component';
 
 @NgModule({
     imports: [
@@ -23,6 +24,6 @@ import { DashboardComponent } from './dashboard.component';
         MatIconModule,
         FlexLayoutModule.withConfig({addFlexToParent: false})
     ],
-    declarations: [DashboardComponent]
+    declarations: [DashboardComponent, TodayPredictionComponent]
 })
 export class DashboardModule {}

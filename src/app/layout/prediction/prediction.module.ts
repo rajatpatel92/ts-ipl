@@ -38,6 +38,9 @@ import { PredictionComponent } from './prediction.component';
     ],
     declarations: [
         PredictionComponent
+    ],
+    exports: [
+        PredictionComponent
     ]
 })
 export class PredictionModule {}

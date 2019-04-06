@@ -15,9 +15,10 @@ export class MatchService {
   getMatches () {
     return this.firestore.collection('matches').snapshotChanges().pipe(
       map(matches => matches.map(match => {
-        const data = match.payload.doc.data() as Match;
-        const id = match.payload.doc.id;
-        return {id, ...data};
+        return {
+          id: match.payload.doc.id,
+          ...match.payload.doc.data()
+        } as Match;
       }))
     );
   }
@@ -26,21 +27,46 @@ export class MatchService {
     var enteredDate = moment(date).startOf('day');
     return this.firestore.collection('matches', ref => ref.where('date', '==', enteredDate)).snapshotChanges().pipe(
       map(matches => matches.map(match => {
-        const data = match.payload.doc.data() as Match;
-        const id = match.payload.doc.id;
-        return {id, ...data};
+        return {
+          id: match.payload.doc.id,
+          ...match.payload.doc.data()
+        } as Match;
       }))
     );
   }
 
   getTodayMatches () {
-    debugger;
-    var todayDate = moment().startOf('day');
-    return this.firestore.collection('matches', ref => ref.where('date', '==', todayDate.toISOString())).snapshotChanges().pipe(
+    var todayDate = moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss.sss') + 'Z';
+    return this.firestore.collection('matches', ref => ref.where('date', '==', todayDate)).snapshotChanges().pipe(
       map(matches => matches.map(match => {
-        const data = match.payload.doc.data() as Match;
-        const id = match.payload.doc.id;
-        return {id, ...data};
+        return {
+          id: match.payload.doc.id,
+          ...match.payload.doc.data()
+        } as Match;
+      }))
+    );
+  }
+
+  getYesterdayMatches() {
+    var yesterdayDate = moment().subtract(1, 'days').startOf('day').format('YYYY-MM-DDTHH:mm:ss.sss') + 'Z';
+    return this.firestore.collection('matches', ref => ref.where('date', '==', yesterdayDate)).snapshotChanges().pipe(
+      map(matches => matches.map(match => {
+        return {
+          id: match.payload.doc.id,
+          ...match.payload.doc.data()
+        } as Match;
+      }))
+    );
+  }
+
+  getMatchesById(id: number) {
+    debugger;
+    return this.firestore.collection('matches', ref => ref.where('unique_id', '==', id)).snapshotChanges().pipe(
+      map(matches => matches.map(match => {
+        return {
+          id: match.payload.doc.id,
+          ...match.payload.doc.data()
+        } as Match;
       }))
     );
   }
@@ -50,8 +76,9 @@ export class MatchService {
   }
 
   updateMatch(match: Match){
-    delete match.unique_id;
-    this.firestore.doc('matches/' + match.unique_id).update(match);
+    var id: string = match.id;
+    delete match.id;
+    this.firestore.doc('matches/' + id).update(match);
   }
 
   deleteMatch(matchId: string) {
