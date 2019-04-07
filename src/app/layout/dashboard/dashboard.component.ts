@@ -4,6 +4,8 @@ import { MatchService } from '../../shared/services/match.service';
 import * as moment from 'moment';
 import { PredictionService } from '../../shared/services/prediction.service';
 import { Prediction } from '../../shared/model/prediction.model';
+import { forEach } from '@angular/router/src/utils/collection';
+import { auth } from 'firebase';
 
 @Component({
     selector: 'app-dashboard',
@@ -14,43 +16,56 @@ export class DashboardComponent implements OnInit {
     
     public todayMatches: Match[];
     public userPredictions: Prediction[] = [];
+    private user: firebase.User;
 
     constructor(private matchService: MatchService, private predictionService: PredictionService) {}
 
     ngOnInit() {
-        this.matchService.getTodayMatches().subscribe(data => {
-            this.todayMatches = data;
-            this.todayMatches.forEach(match => {
-                match["displayDate"] = moment(match.date).format('Do MMMM YYYY');
+        this.user = auth().currentUser;
+        if (this.user) {
+            this.matchService.getTodayMatches().subscribe(data => {
+                this.todayMatches = data;
+                
+                this.predictionService.getUserPredictions(this.user.uid).subscribe(data => {
+                    this.userPredictions = data.map(e => {
+                        return {
+                        id: e.payload.doc.id,
+                        ...e.payload.doc.data()
+                        } as Prediction;
+                    });
+                    this.todayMatches.forEach(match => {
+                        match["displayDate"] = moment(match.date).format('Do MMMM YYYY');
+                        if (this.userPredictions.find(e => 
+                            (e.match_id == match.unique_id))){
+                            var pred = this.userPredictions.find(e => e.match_id == match.unique_id);
+                            if (pred) {
+                                match["predValue"] = pred.prediction;
+                            }
+                        }
+                    });
+                });
             });
-        });
-        this.predictionService.getUserPredictions('YISY').subscribe(data => {
-            this.userPredictions = data.map(e => {
-                return {
-                id: e.payload.doc.id,
-                ...e.payload.doc.data()
-                } as Prediction;
-            });
-        });
+        }
     }
 
     OnToggleChanged(ev){
         console.log(ev);
         this.todayMatches.forEach(match => {
             if (match["team-1"]==ev) {
-                this.savePrediction(match.unique_id, match["team-1"], match.date);
+                this.savePrediction(match.unique_id, match["team-1"], match.date, match["team-1"] + ' vs ' + match["team-2"]);
             } else if (match["team-2"]==ev) {
-                this.savePrediction(match.unique_id, match["team-2"], match.date);
+                this.savePrediction(match.unique_id, match["team-2"], match.date, match["team-1"] + ' vs ' + match["team-2"]);
             }
         });
     }
 
-    savePrediction(match_id, team, date) {
+    savePrediction(match_id, team, date, matchName) {
         var pred = {
             match_id: match_id,
             prediction: team,
-            user: 'YISY',
+            user: this.user.uid,
             date: date,
+            match: matchName
         } as Prediction;
         this.createOrUpdatePrediction(pred, this.userPredictions);
     }

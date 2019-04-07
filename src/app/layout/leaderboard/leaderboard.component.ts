@@ -12,7 +12,7 @@ export class LeaderboardComponent implements OnInit {
     users: User[];
     constructor(private userService: UserService) {}
 
-    displayedColumns = ['name', 'points'];
+    displayedColumns = ['diaplayName', 'points'];
     dataSource: MatTableDataSource<User>;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;

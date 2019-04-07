@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LayoutComponent } from './layout.component';
+import { AdminAccessGuard } from '../shared/guard';
 
 const routes: Routes = [
     {
@@ -39,7 +40,8 @@ const routes: Routes = [
             },
             {
                 path: 'apimanagement',
-                loadChildren: './apimanagement/apimanagement.module#ApimanagementModule'
+                loadChildren: './apimanagement/apimanagement.module#ApimanagementModule',
+                canActivate: [AdminAccessGuard]
             }
             /* {
                 path: 'blank-page',

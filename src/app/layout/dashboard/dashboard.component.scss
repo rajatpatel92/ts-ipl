@@ -26,3 +26,9 @@ table {
 .selected-team {
     margin: 15px 0;
 }
+
+@media screen and (max-width: 992px) {
+    .button-toggle {
+        font-size: small;
+    }
+}

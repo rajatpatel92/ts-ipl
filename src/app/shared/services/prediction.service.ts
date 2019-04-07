@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Prediction } from '../model/prediction.model';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,15 @@ export class PredictionService {
     return this.firestore.collection('predictions', ref => ref.where('user','==',userId)).snapshotChanges();
   }
 
-  getUserTodayPredictions(userId: string, date: Date){
-    return this.firestore.collection('predictions', ref => ref.where('user','==',userId)).snapshotChanges();
+  //TODO
+  getUserTodayPredictions(userId: string, date: Date) {
+    return this.firestore.collection('predictions', ref => 
+      ref.where('user','==',userId)
+        .where('date','==',moment(date).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sss') + 'Z')).snapshotChanges();
+  }
+
+  getPredictionsByMatch(matchId: number) {
+    return this.firestore.collection('predictions', ref => ref.where('match_id', "==", matchId)).snapshotChanges();
   }
 
   createPrediction(prediction: Prediction) {

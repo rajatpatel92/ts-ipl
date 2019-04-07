@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { PredictionComponent } from '../../prediction/prediction.component';
 import { MatDialog } from '@angular/material';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
     selector: 'app-topnav',
@@ -12,7 +13,7 @@ import { MatDialog } from '@angular/material';
 export class TopnavComponent implements OnInit {
     public pushRightClass: string;
 
-    constructor(public router: Router, private translate: TranslateService, public dialog: MatDialog) {
+    constructor(public router: Router, private translate: TranslateService, public dialog: MatDialog, public auth: AuthService) {
         this.router.events.subscribe(val => {
             if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
                 this.toggleSidebar();

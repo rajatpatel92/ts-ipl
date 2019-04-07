@@ -1,7 +1,8 @@
 export class User {
     id: string;
-    userId: string;
+    uid: string;
+    email: string;
     lastPredictionDate: Date;
     points: number;
-    name: string;
+    diaplayName: string;
 }

@@ -5,6 +5,7 @@ import { MatButtonModule, MatCheckboxModule, MatInputModule } from '@angular/mat
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @NgModule({
     imports: [
@@ -15,6 +16,7 @@ import { LoginComponent } from './login.component';
         MatButtonModule,
         FlexLayoutModule.withConfig({addFlexToParent: false})
     ],
+    providers: [AuthService],
     declarations: [LoginComponent]
 })
 export class LoginModule {}

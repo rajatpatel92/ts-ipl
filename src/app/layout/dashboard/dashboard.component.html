@@ -1,7 +1,7 @@
 <div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
-    <div fxFlex>
+    <!-- <div fxFlex>
         <app-stat [bgClass]="'danger'" [icon]="'dashboard'" [count]="2" [label]="'Today\'s Pending Predictions!'" [detailPage]="['/prediction']"></app-stat>
-    </div>
+    </div> -->
     <div fxFlex>
         <app-stat [bgClass]="'warn'" [icon]="'view_list'" [count]="120" [label]="'My Points'"></app-stat>
     </div>
@@ -37,6 +37,7 @@
         </table>
     </div>
 </div> -->
+<div style="margin-bottom: 10px">
 <div>
     <p> Make Today's Predictions </p>
 </div>
@@ -60,17 +61,18 @@
                     <mat-chip [selectable]="selectable">{{match["team-1"]}}</mat-chip>
                     <mat-chip [selectable]="selectable">{{match["team-2"]}}</mat-chip>
                 </mat-chip-list> -->
-                <mat-button-toggle-group #group="matButtonToggleGroup" (change)="OnToggleChanged(group.value)">
-                    <mat-button-toggle value="{{match['team-1']}}">
+                <mat-button-toggle-group #group="matButtonToggleGroup" (change)="OnToggleChanged(group.value)" value="{{match['predValue']}}">
+                    <mat-button-toggle class="button-toggle" value="{{match['team-1']}}">
                         {{match["team-1"]}}
                     </mat-button-toggle>
-                    <mat-button-toggle value="{{match['team-2']}}">
+                    <mat-button-toggle class="button-toggle" value="{{match['team-2']}}">
                         {{match["team-2"]}}
                     </mat-button-toggle>
-                  </mat-button-toggle-group>
-                  <!-- <div class="selected-team">Selected Team: {{group.value}}</div> -->
+                </mat-button-toggle-group>
+                <!-- <div class="selected-team">Selected Team: {{group.value}}</div> -->
             </mat-card-actions>
         </mat-card>
     </div>
 </div>
 <app-today-prediction></app-today-prediction>
+</div>

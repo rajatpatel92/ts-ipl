@@ -11,6 +11,9 @@ export const environment = {
     projectId: "ts-ipl",
     storageBucket: "ts-ipl.appspot.com",
     messagingSenderId: "658380817636"
+  },
+  appConfig: {
+    adminUid: "3noLrYbAi4bdi31IOkt1EmPalMv2"
   }
 };
 

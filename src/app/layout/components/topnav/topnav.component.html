@@ -3,7 +3,7 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
     <div class="nav-brand">
-        TS IPL 2019
+        Tatva IPL 2019
     </div>
     <!-- <form class="hidden-sm" style="margin-left: 20px; margin-top: 5px">
         <mat-form-field>
@@ -45,7 +45,7 @@
             <span>{{ 'Settings' | translate }}</span>
         </button>
     </mat-menu> -->
-    <button mat-icon-button (click)="onLoggedout()">
+    <button mat-icon-button (click)="auth.signOut()">
         <mat-icon>exit_to_app</mat-icon>
     </button>
 </mat-toolbar>

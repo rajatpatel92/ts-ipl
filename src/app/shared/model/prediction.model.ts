@@ -4,5 +4,6 @@ export class Prediction {
     match_id: number;
     prediction: string;
     user: string;
-    date: Date
+    date: string;
+    match: string;
 }

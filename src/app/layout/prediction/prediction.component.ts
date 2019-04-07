@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { PredictionService } from '../../shared/services/prediction.service';
 import { Prediction } from '../../shared/model/prediction.model';
+import * as moment from 'moment';
+import { auth } from 'firebase';
 
 @Component({
     selector: 'app-prediction',
@@ -10,9 +12,10 @@ import { Prediction } from '../../shared/model/prediction.model';
 })
 export class PredictionComponent implements OnInit{
     predictions: Prediction[];
+
     constructor(private predictionService: PredictionService) {}
 
-    displayedColumns = ['match_id', 'prediction'];
+    displayedColumns = ['date', 'match', 'prediction'];
     dataSource: MatTableDataSource<Prediction>;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -20,8 +23,10 @@ export class PredictionComponent implements OnInit{
 
 
     ngOnInit() {
-        
-        this.predictionService.getUserPredictions('YISY')
+        debugger;
+        var user = auth().currentUser;
+        if (user) {
+            this.predictionService.getUserPredictions(user.uid)
             .subscribe(
                 data => {
                     this.predictions = data.map(e => {
@@ -30,10 +35,14 @@ export class PredictionComponent implements OnInit{
                         ...e.payload.doc.data()
                         } as Prediction;
                     });
+                    this.predictions.forEach(p => {
+                        p.date = moment(p.date.substring(0,p.date.length-2)).format("Do MMM, YYYY");
+                    });
                     // Assign the data to the data source for the table to render
                     this.dataSource = new MatTableDataSource(this.predictions);
                     this.dataSource.paginator = this.paginator;
                     this.dataSource.sort = this.sort;
                 });
+        }
     }
 }
