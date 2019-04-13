@@ -23,7 +23,6 @@ export class PredictionComponent implements OnInit{
 
 
     ngOnInit() {
-        debugger;
         var user = auth().currentUser;
         if (user) {
             this.predictionService.getUserPredictions(user.uid)
@@ -34,6 +33,11 @@ export class PredictionComponent implements OnInit{
                         id: e.payload.doc.id,
                         ...e.payload.doc.data()
                         } as Prediction;
+                    });
+                    this.predictions.sort((a,b) => {
+                        const aDate = new Date(a.date);
+                        const bDate = new Date(b.date);
+                        return bDate.getTime() - aDate.getTime();
                     });
                     this.predictions.forEach(p => {
                         p.date = moment(p.date.substring(0,p.date.length-2)).format("Do MMM, YYYY");

@@ -30,6 +30,9 @@ export class LeaderboardComponent implements OnInit {
                         ...e.payload.doc.data()
                         } as User;
                     });
+                    this.users.sort((a,b) => {
+                        return b.points - a.points;
+                    });
                     // Assign the data to the data source for the table to render
                     this.dataSource = new MatTableDataSource(this.users);
                     this.dataSource.paginator = this.paginator;

@@ -17,6 +17,8 @@ export class DashboardComponent implements OnInit {
     public todayMatches: Match[];
     public userPredictions: Prediction[] = [];
     private user: firebase.User;
+    public timeUp: boolean;
+    public MINUTESBEFOREMATCH: number = 30;
 
     constructor(private matchService: MatchService, private predictionService: PredictionService) {}
 
@@ -33,6 +35,11 @@ export class DashboardComponent implements OnInit {
                         ...e.payload.doc.data()
                         } as Prediction;
                     });
+                    this.todayMatches.sort((a,b) => {
+                        const aDate = new Date(a.dateTimeGMT);
+                        const bDate = new Date(b.dateTimeGMT);
+                        return aDate.getTime() - bDate.getTime();
+                    });
                     this.todayMatches.forEach(match => {
                         match["displayDate"] = moment(match.date).format('Do MMMM YYYY');
                         if (this.userPredictions.find(e => 
@@ -41,6 +48,12 @@ export class DashboardComponent implements OnInit {
                             if (pred) {
                                 match["predValue"] = pred.prediction;
                             }
+                        };
+                        let matchDeadlineTime = moment.utc(match.dateTimeGMT).subtract(this.MINUTESBEFOREMATCH, 'minutes');
+                        if (moment.utc().isBefore(matchDeadlineTime)) {
+                            match["timeUp"] = false;
+                        } else {
+                            match["timeUp"] = true;
                         }
                     });
                 });

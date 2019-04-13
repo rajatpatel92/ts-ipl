@@ -13,7 +13,7 @@ export const environment = {
     messagingSenderId: "658380817636"
   },
   appConfig: {
-    adminUid: "3noLrYbAi4bdi31IOkt1EmPalMv2"
+    adminUid: "g4bUNW5oEBcSItxmAWbYriTNE622"
   }
 };
 
