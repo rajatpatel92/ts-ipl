@@ -17,23 +17,10 @@ const routes: Routes = [
                 path: 'dashboard',
                 loadChildren: './dashboard/dashboard.module#DashboardModule'
             },
-            /* {
-                path: 'charts',
-                loadChildren: './charts/charts.module#ChartsModule'
-            }, */
-            /* {
-                path: 'components',
-                loadChildren:
-                    './material-components/material-components.module#MaterialComponentsModule'
-            }, */
             {
                 path: 'prediction',
                 loadChildren: './prediction/prediction.module#PredictionModule'
             },
-            /* {
-                path: 'grid',
-                loadChildren: './grid/grid.module#GridModule'
-            }, */
             {
                 path: 'leaderboard',
                 loadChildren: './leaderboard/leaderboard.module#LeaderboardModule'
@@ -43,10 +30,6 @@ const routes: Routes = [
                 loadChildren: './apimanagement/apimanagement.module#ApimanagementModule',
                 canActivate: [AdminAccessGuard]
             }
-            /* {
-                path: 'blank-page',
-                loadChildren: './blank-page/blank-page.module#BlankPageModule'
-            } */
         ]
     }
 ];
