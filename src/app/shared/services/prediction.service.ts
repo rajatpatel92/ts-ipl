@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Prediction } from '../model/prediction.model';
 import * as moment from 'moment';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,14 @@ export class PredictionService {
   }
 
   getPredictionsByMatch(matchId: number) {
-    return this.firestore.collection('predictions', ref => ref.where('match_id', "==", matchId)).snapshotChanges();
+    return this.firestore.collection('predictions', ref => ref.where('match_id', "==", matchId)).snapshotChanges().pipe(
+      map(preds => preds.map(pred => {
+        return {
+          id: pred.payload.doc.id,
+          ...pred.payload.doc.data()
+          } as Prediction;
+      }))
+    );
   }
 
   createPrediction(prediction: Prediction) {

@@ -34,8 +34,10 @@ export class UserService {
     let userRef = this.firestore.doc('users/' + uid);
     return userRef.update({
       points: firebase.firestore.FieldValue.increment(uPoints)
-    }).then(() => console.log("User updated successfully"))
-    .catch((ex) => console.log("User not updated with exception: "+ex));
+    }).then(
+      () => console.log("User updated successfully"))
+    .catch(
+      (ex) => console.log("User not updated with exception: "+ex));
   }
 
   deleteUser(userId: string) {

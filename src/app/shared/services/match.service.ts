@@ -60,7 +60,6 @@ export class MatchService {
   }
 
   getMatchesById(id: number) {
-    debugger;
     return this.firestore.collection('matches', ref => ref.where('unique_id', '==', id)).snapshotChanges().pipe(
       map(matches => matches.map(match => {
         return {

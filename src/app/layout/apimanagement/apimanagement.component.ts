@@ -3,9 +3,7 @@ import { CricapiService } from '../../shared/services/cricapi.service';
 import { Match } from '../../shared/model/match.model';
 import { MatchService } from '../../shared/services/match.service';
 import * as moment from 'moment';
-import { element } from 'protractor';
 import { PredictionService } from '../../shared/services/prediction.service';
-import { Prediction } from 'src/app/shared/model/prediction.model';
 import { Result } from '../../shared/model/result.model';
 import { ResultService } from '../../shared/services/result.service';
 import { UserService } from '../../shared/services/user.service';
@@ -18,6 +16,7 @@ import { UserService } from '../../shared/services/user.service';
 export class ApimanagementComponent implements OnInit {
   
   apiMatches: Match[];
+  displayLog: string = "";
 
   constructor(private cricapiService: CricapiService, 
     private matchService: MatchService, 
@@ -26,25 +25,22 @@ export class ApimanagementComponent implements OnInit {
     private userService: UserService) { }
 
   ngOnInit() {
-
-    debugger;
-    console.log("All Matches");
-    //this.matchService.getMatches().subscribe(next => console.log(next));
-    console.log("Today Matches");
-    //this.matchService.getTodayMatches().subscribe(data => console.log(data));
         
   }
 
   updateLocalMatches() {
-    console.log("Updating Yesterday Matches");
+    this.log("Updating Yesterday Matches...");
     var apiMatches;
     this.cricapiService.getMatches().subscribe(matches => {
       apiMatches = new Map(Object.entries(matches)).get('matches');
+      this.log("Retrieved matches from API...");
+      this.log("Updating Local Matches in Database...");
       //Now update local matches database
       this.matchService.getYesterdayMatches().subscribe(data => {
         data.forEach(element => {
           this.updateResults(element, apiMatches);
-        })
+        });
+        this.log("Done");
       });
     });
   }
@@ -53,6 +49,7 @@ export class ApimanagementComponent implements OnInit {
     apiMatches.forEach(element => {
       if (element.unique_id == yesterdayMatch.unique_id) {
         if ("winner_team" in element) {
+          this.log("Updating Winner for match : " + element.unique_id);
           yesterdayMatch.winner_team = element.winner_team;
           this.matchService.updateMatch(yesterdayMatch);
         } else {
@@ -69,13 +66,7 @@ export class ApimanagementComponent implements OnInit {
           let result = new Result();
           result.match_id = match.unique_id;
           //Get Predictions for the match
-          this.predictionService.getPredictionsByMatch(match.unique_id).subscribe(preds => {
-            let predictions = preds.map(p => {
-                return {
-                id: p.payload.doc.id,
-                ...p.payload.doc.data()
-                } as Prediction;
-            });
+          this.predictionService.getPredictionsByMatch(match.unique_id).subscribe(predictions => {
             //Calculate Points for Winner
             let loserCount = 0;
             let winningUsers: string[] = [];
@@ -87,13 +78,13 @@ export class ApimanagementComponent implements OnInit {
               }
             });
             result.winners = winningUsers;
-            let pointsToWinner = predictions.length - loserCount;
-            console.log("Match id: " + match.unique_id + " Points to Winner: " + pointsToWinner);
+            result.pointsToWinner = predictions.length - loserCount;
+            console.log("Match id: " + match.unique_id + " Points to Winner: " + result.pointsToWinner);
             //Save Result
             this.resultService.createResult(result);
             //Update User Points
             winningUsers.forEach(user => {
-              this.userService.updateUserPoints(user, pointsToWinner);
+              this.userService.updateUserPoints(user, result.pointsToWinner);
             })
           });
         }
@@ -124,5 +115,10 @@ export class ApimanagementComponent implements OnInit {
           }
         });
       });
+  }
+
+  log(e: string) {
+    this.displayLog += "\n" + e;
+    console.log(e);
   }
 }
