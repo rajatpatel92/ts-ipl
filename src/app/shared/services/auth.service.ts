@@ -62,9 +62,7 @@ export class AuthService {
     const data: User = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
-      lastPredictionDate: new Date(),
-      points: 0
+      displayName: user.displayName
     }
 
     return userRef.set(data, { merge: true })

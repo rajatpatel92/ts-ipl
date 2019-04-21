@@ -64,11 +64,9 @@ export class DashboardComponent implements OnInit {
                 });
             });
             this.userService.getUser(this.user.uid).subscribe(
-                user => {
-                    if (user.exists){
-                        let loggedInUser = user.data();
-                        this.myPoints = loggedInUser['points'];
-                    }
+                users => {
+                    let loggedInUser = users[0].payload.doc.data();
+                    this.myPoints = loggedInUser['points'];
                 }
             );
             this.userService.getLeader().subscribe(

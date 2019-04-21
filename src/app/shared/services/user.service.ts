@@ -16,7 +16,7 @@ export class UserService {
   }
 
   getUser(id: string) {
-    return this.firestore.collection('users').doc(id).get();
+    return this.firestore.collection('users', ref => ref.where('uid', "==", id).limit(1)).snapshotChanges();
   }
 
   getLeaderboard(){
