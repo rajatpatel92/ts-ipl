@@ -6,6 +6,7 @@ import { PredictionService } from '../../shared/services/prediction.service';
 import { Prediction } from '../../shared/model/prediction.model';
 import { forEach } from '@angular/router/src/utils/collection';
 import { auth } from 'firebase';
+import { UserService } from '../../shared/services/user.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -18,9 +19,13 @@ export class DashboardComponent implements OnInit {
     public userPredictions: Prediction[] = [];
     private user: firebase.User;
     public timeUp: boolean;
+    public myPoints: number;
+    public leaderPoints: number;
     public MINUTESBEFOREMATCH: number = 30;
 
-    constructor(private matchService: MatchService, private predictionService: PredictionService) {}
+    constructor(private matchService: MatchService, 
+        private predictionService: PredictionService,
+        private userService: UserService) {}
 
     ngOnInit() {
         this.user = auth().currentUser;
@@ -58,6 +63,20 @@ export class DashboardComponent implements OnInit {
                     });
                 });
             });
+            this.userService.getUser(this.user.uid).subscribe(
+                user => {
+                    if (user.exists){
+                        let loggedInUser = user.data();
+                        this.myPoints = loggedInUser['points'];
+                    }
+                }
+            );
+            this.userService.getLeader().subscribe(
+                users => {
+                    let leader = users[0].payload.doc.data();
+                    this.leaderPoints = leader['points'];
+                }
+            );
         }
     }
 

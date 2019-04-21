@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '../model/user.model';
 import * as firebase from 'firebase';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +16,15 @@ export class UserService {
   }
 
   getUser(id: string) {
-    return this.firestore.doc('users/'+ id).get();
+    return this.firestore.collection('users').doc(id).get();
   }
 
   getLeaderboard(){
     return this.firestore.collection('users', ref => ref.orderBy('points', 'desc')).snapshotChanges();
+  }
+
+  getLeader(){
+    return this.firestore.collection('users', ref => ref.orderBy('points', 'desc').limit(1)).snapshotChanges();
   }
 
   createUser(user: User) {
