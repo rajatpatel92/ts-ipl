@@ -61,7 +61,6 @@ export class ApimanagementComponent implements OnInit {
   }
 
   updatePoints() {
-    debugger;
     this.matchService.getYesterdayMatches().subscribe(async data => {
       for (let match of data) {
         //Only update points if winner is available and points are not alreday calculated
