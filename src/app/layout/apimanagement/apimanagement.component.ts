@@ -7,6 +7,7 @@ import { PredictionService } from '../../shared/services/prediction.service';
 import { Result } from '../../shared/model/result.model';
 import { ResultService } from '../../shared/services/result.service';
 import { UserService } from '../../shared/services/user.service';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-apimanagement',
@@ -60,61 +61,50 @@ export class ApimanagementComponent implements OnInit {
   }
 
   updatePoints() {
-    this.matchService.getYesterdayMatches().subscribe(data => {
-      data.forEach(match => {
-        if ( "winner_team" in match ) {
-          let result = new Result();
-          result.match_id = match.unique_id;
-          //Get Predictions for the match
-          this.predictionService.getPredictionsByMatch(match.unique_id).subscribe(predictions => {
-            //Calculate Points for Winner
-            let loserCount = 0;
-            let winningUsers: string[] = [];
-            predictions.forEach(pred => {
-              if (pred.prediction == match.winner_team) {
-                winningUsers.push(pred.user);
+    debugger;
+    this.matchService.getYesterdayMatches().subscribe(async data => {
+      for (let match of data) {
+        //Only update points if winner is available and points are not alreday calculated
+        if ( ("winner_team" in match)) {
+          //Check if result record already exists for the match
+          const resultDocRef = this.resultService.getDocRef(match['unique_id'].toString());
+          await resultDocRef.get().subscribe(
+            async resultDoc => {
+              if (resultDoc.exists) {
+                this.log("Points already calculated for the match:" + match.unique_id + ", Skipping calculation...");
+                return null;
               } else {
-                ++loserCount;
+                let result = new Object();
+                result['match_id'] = match.unique_id;
+                //Get Predictions for the match
+                await this.predictionService.getPredictionsByMatch(match.unique_id).subscribe(
+                  async predictions => {
+                    //Calculate Points for Winner
+                    let winningUsers: string[] = [];
+                    predictions.forEach(pred => {
+                      if (pred.prediction == match.winner_team) {
+                        winningUsers.push(pred.user);
+                      }
+                    });
+                    result['winners'] = winningUsers;
+                    result['pointsToWinner'] = environment.appConfig.totalPlayers - winningUsers.length;
+                    this.log("Match id: " + match.unique_id + " Points to Winner: " + result['pointsToWinner']);
+                    //Save Result
+                    await this.resultService.createResult(result);
+                    //Update User Points
+                    await winningUsers.forEach(user => {
+                      this.log("User: " + user + " Points to be Added: " + result['pointsToWinner']);
+                      this.userService.updateUserPoints(user, result['pointsToWinner']);
+                    });
+                  },
+                  error => this.log(error));
               }
-            });
-            result.winners = winningUsers;
-            result.pointsToWinner = predictions.length - loserCount;
-            console.log("Match id: " + match.unique_id + " Points to Winner: " + result.pointsToWinner);
-            //Save Result
-            this.resultService.createResult(result);
-            //Update User Points
-            winningUsers.forEach(user => {
-              this.userService.updateUserPoints(user, result.pointsToWinner);
-            })
-          });
+            }, error => this.log(error));
+        } else {
+          this.log("No points updated for match : " + match['unique_id'] + " (Winner is not announced yet...!!)");
         }
-        
-      })
+      }
     });
-  }
-
-  testFunction() {
-    this.cricapiService.getMatches().subscribe(
-      data => {
-        this.apiMatches = new Map(Object.entries(data)).get('matches');
-        this.apiMatches.forEach(element => {
-          if (element.type == "Twenty20"){
-            console.log(element);
-            var todayDate = Date.now();
-            var elementDate = new Date(element.date);
-            if (moment(todayDate).isSame(elementDate, 'day')) {
-              //create new match
-              //this.matchService.createMatch(element);
-              //return;
-            }
-            if(moment(elementDate).isBefore(todayDate, 'day')){
-              //update match record
-              //console.log(moment(elementDate).isBefore(todayDate, 'day'));
-              //this.matchService.updateMatch(element);
-            }
-          }
-        });
-      });
   }
 
   log(e: string) {

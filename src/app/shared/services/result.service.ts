@@ -32,18 +32,24 @@ export class ResultService {
     );
   }
 
-  createResult(result: Result){
-    return this.firestore.collection('matches').add(result);
+  createResult(result: Object){
+    let id: string = result['match_id'].toString();
+    delete result['match_id'];
+    return this.firestore.collection('results').doc(id).set(result);
   }
 
   updateResult(result: Result){
     var id: string = result.id;
     delete result.id;
-    this.firestore.doc('matches/' + id).update(result);
+    this.firestore.doc('results/' + id).update(result);
   }
 
   deleteResult(resultId: string) {
-    this.firestore.doc('matches/' + resultId).delete();
+    this.firestore.doc('results/' + resultId).delete();
+  }
+
+  getDocRef(id: string) {
+    return this.firestore.doc('results/' + id);
   }
   
 }
