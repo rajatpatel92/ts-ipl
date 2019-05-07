@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 
 export class CricapiService {
 
-  private apiUrl: string = "http://cricapi.com/api/matches/?apikey=zNWeUaA83hcEiq7NuzIAlml31qO2";
+  private apiUrl: string = "https://cricapi.com/api/matches/?apikey=zNWeUaA83hcEiq7NuzIAlml31qO2";
 
   constructor(private http: HttpClient, private matchService: MatchService) { }
 
