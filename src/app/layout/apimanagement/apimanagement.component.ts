@@ -18,6 +18,7 @@ export class ApimanagementComponent implements OnInit {
   
   apiMatches: Match[];
   displayLog: string = "";
+  POINTSMULTIPLIER = 2;
 
   constructor(private cricapiService: CricapiService, 
     private matchService: MatchService, 
@@ -86,7 +87,7 @@ export class ApimanagementComponent implements OnInit {
                       }
                     });
                     result['winners'] = winningUsers;
-                    result['pointsToWinner'] = environment.appConfig.totalPlayers - winningUsers.length;
+                    result['pointsToWinner'] = (environment.appConfig.totalPlayers - winningUsers.length) * this.POINTSMULTIPLIER;
                     this.log("Match id: " + match.unique_id + " Points to Winner: " + result['pointsToWinner']);
                     //Save Result
                     await this.resultService.createResult(result);
