@@ -18,7 +18,7 @@ export class ApimanagementComponent implements OnInit {
   
   apiMatches: Match[];
   displayLog: string = "";
-  POINTSMULTIPLIER = 2;
+  POINTSMULTIPLIER = 3;
 
   constructor(private cricapiService: CricapiService, 
     private matchService: MatchService, 
